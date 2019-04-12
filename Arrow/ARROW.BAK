@@ -1,0 +1,139 @@
+#include<stdio.h>
+#include<conio.h>
+#include<dos.h>
+#include<time.h>
+#include<iostream.h>
+#include<graphics.h>
+#include<stdlib.h>
+int count=0;
+void border()
+{
+int x=getmaxx(),y=getmaxy();
+line(1,1,1,y);
+line(1,1,x,1);
+line(x,1,x,y);
+line(1,y,x,y);
+}
+void front()
+{
+border();
+settextstyle(1,0,4);
+outtextxy(180,200,"Trace The Arrow");
+}
+class arrow
+{
+public:
+int leftendx;
+int rightendx;
+int y;
+int arrowx;
+int arrowy;
+arrow(int xx, int yy)
+{
+ leftendx=xx;
+ rightendx=xx+50;
+ y=yy;
+ arrowx=xx+30;
+ arrowy=20;
+}
+void draw(int leftendx, int y)
+{
+ rightendx=leftendx+50;
+ arrowx=leftendx+30;
+ line(leftendx,y,rightendx,y);
+ line(rightendx,y,arrowx,y+arrowy);
+ line(rightendx,y,arrowx,y-arrowy);
+}
+};
+void map()
+{
+ int a[]={210,239-25,210,239+25,450,239+25,450,239-25};  // changing 350 to 250
+ int k=getmaxy();
+ setcolor(5);
+ int b[]={400,1,405,1,405,k*2,400,k*2};
+ fillpoly(4,b);
+ setcolor(6);
+ fillpoly(4,a);
+/* for(int i=0; i<50; i++)
+ {
+ line(350,k-2*i,450,k-2*i);
+ line(350,k+2*i,450,k+2*i);
+ }
+ */
+ setcolor(15);
+}
+void main()
+{
+clrscr();
+int gd=DETECT,gm,tt=0;
+int x,y,tim;
+initgraph(&gd,&gm,"C://TurboC3//BGI");
+front();
+getch();
+cleardevice();
+closegraph();
+//tp:
+//cout<<"Enter the difficulty level(5-30): ";
+clrscr();
+tp:
+time_t t;
+srand((unsigned) time(&t));
+tim=rand();
+tim=tim%14;
+tim+=1;
+initgraph(&gd,&gm,"C://TurboC3//BGI");
+setbkcolor(1);
+border();
+xx=getmaxx()/2;
+y=getmaxy()/2;
+cleardevice();
+border();
+map();
+arrow a(50,y);
+getch();
+unsigned i=0;
+while(!kbhit())
+{
+ if(50+i>160&&50+i<450)
+ {
+// setcolor(15);
+// a.draw(50+i,y);
+ delay(tim);
+// setcolor(1);
+// a.draw(50+i,y);
+ }
+ else
+ {
+ setcolor(15);
+ a.draw(50+i,y);
+ delay(tim);
+ setcolor(1);
+ a.draw(50+i,y);
+ }
+ i++;
+}
+delay(10);
+getch();
+if ((50+i>350)&&(50+i<420))
+{
+setcolor(2);
+a.draw(50+i,y);
+count++;
+}
+else
+{
+setcolor(4);
+a.draw(50+i,y);
+count--;
+}
+getch();
+cleardevice();
+closegraph();
+tt++;
+if(tt<10)
+goto tp;
+else
+gotoxy(27,12);
+cout<<"Total points = "<<count<<"/10.";
+getch();
+}
